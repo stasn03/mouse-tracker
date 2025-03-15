@@ -1,6 +1,5 @@
 from pynput.mouse import Listener, Button
 import time
-import threading
 
 
 def add_to_file(file_path, message):
@@ -31,9 +30,19 @@ def on_click(x, y, button, pressed):
             return False
 
 
+def on_scroll(x, y, dx, dy):
+    if dy > 0:
+        print(f"Scrolled up at {x, y}")
+        add_to_file("moves.txt", f"Scrolled up at {x, y}\n")
+    else:
+        print(f"Scrolled down at {x, y}")
+        add_to_file("moves.txt", f"Scrolled down at {x, y}\n")
+
+
 with Listener(
     on_move= on_move,
-    on_click= on_click
+    on_click= on_click,
+    on_scroll= on_scroll
 ) as listener:
     listener.join()
 
